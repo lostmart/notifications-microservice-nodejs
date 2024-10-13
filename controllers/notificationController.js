@@ -1,19 +1,15 @@
-import express from "express"
-const router = express.Router()
-
-import { sendNotification } from "../controllers/notificationController.js"
-
-router.post("/send-notification", (req, res) => {
+// Import services here like sendEmail, sendSMS, sendPush, etc.
+export const sendNotification = (req, res) => {
 	const { recipient, message, type } = req.body
-	//sendNotification(recipient, message, type)
 
-	// Check empty
+	// Validate required fields
 	if (!recipient || !message || !type) {
 		return res
 			.status(400)
 			.json({ error: "Recipient, message, and type are required" })
 	}
-	// Check type
+
+	// Validate data types
 	if (
 		typeof recipient !== "string" ||
 		typeof message !== "string" ||
@@ -23,24 +19,28 @@ router.post("/send-notification", (req, res) => {
 			.status(400)
 			.json({ error: "Invalid data sent to the notification service" })
 	}
-	const validationType = ["email", "sms", "push"]
-	if (!validationType.includes(type)) {
+
+	// Validate notification type
+	const validTypes = ["email", "sms", "push"]
+	if (!validTypes.includes(type)) {
 		return res.status(400).json({
-			error: "Invalid notification type: only sms, email or push allowed !",
+			error: "Invalid notification type: only sms, email or push allowed!",
 		})
 	}
 
+	// Process notification (this would call services or business logic)
 	try {
-		// sendNotification(recipient, message, type)
-		// success response ✅
+		// You will later integrate actual notification logic here
+		// e.g., sendNotificationService(recipient, message, type);
+
+		// Success response ✅
 		res.status(200).json({
 			msg: `Notification sent to ${recipient} successfully`,
 			type,
 			message,
 		})
 	} catch (error) {
+		// Handle errors
 		res.status(500).json({ error: error.message })
 	}
-})
-
-export default router
+}
