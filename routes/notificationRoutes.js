@@ -4,11 +4,21 @@ const router = express.Router()
 router.post("/send-notification", (req, res) => {
 	const { recipient, message, type } = req.body
 
-	// Perform validation
+	// Check empty
 	if (!recipient || !message || !type) {
 		return res
 			.status(400)
 			.json({ error: "Recipient, message, and type are required" })
+	}
+	// Check type
+	if (
+		typeof recipient !== "string" ||
+		typeof message !== "string" ||
+		typeof type !== "string"
+	) {
+		return res
+			.status(400)
+			.json({ error: "Invalid data sent to the notification service" })
 	}
 
 	// Placeholder logic for sending notifications (to be implemented)
