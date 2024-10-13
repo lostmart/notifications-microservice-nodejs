@@ -1,10 +1,9 @@
 import express from "express"
+import { sendEmail } from "../controllers/emailController.js"
 const router = express.Router()
 
-import { sendNotification } from "../controllers/notificationController.js"
-
 router.post("/send-notification", (req, res) => {
-	const { recipient, message, type } = req.body
+	const { recipient, message, subject, type } = req.body
 	//sendNotification(recipient, message, type)
 
 	// Check empty
@@ -29,19 +28,18 @@ router.post("/send-notification", (req, res) => {
 			error: "Invalid notification type: only sms, email or push allowed !",
 		})
 	}
+	sendEmail(req, res)
 
-	try {
-		// sendNotification(recipient, message, type)
-		// success response ✅
-		sendNotification(req, res)
-		res.status(200).json({
-			msg: `Notification sent to ${recipient} successfully`,
-			type,
-			message,
-		})
-	} catch (error) {
-		res.status(500).json({ error: error.message })
-	}
+	// try {
+
+	// 	res.status(200).json({
+	// 		msg: `Notification sent to ${recipient} successfully`,
+	// 		type,
+	// 		message,
+	// 	})
+	// } catch (error) {
+	// 	res.status(500).json({ error: error.message })
+	// }
 })
 
 export default router
