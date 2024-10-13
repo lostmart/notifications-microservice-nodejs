@@ -5,15 +5,6 @@
  * @param {string} type: only three types allowed "email", "sms", "push"
  */
 export const sendNotification = (recipient, message, type) => {
-	const { recipient, message, type } = req.body
-
-	try {
-		sendNotification(recipient, message, type)
-		res.status(200).json({ msg: "Notification sent successfully" })
-	} catch (error) {
-		res.status(500).json({ error: error.message })
-	}
-
 	checkType = () => {
 		switch (type) {
 			case "email":
@@ -28,5 +19,15 @@ export const sendNotification = (recipient, message, type) => {
 			default:
 				throw new Error("Invalid notification type")
 		}
+	}
+
+    if(checkType)
+	try {
+		sendNotification(recipient, message, type)
+		return "Notification sent successfully"
+		//res.status(200).json({ msg: "Notification sent successfully" })
+	} catch (error) {
+		//res.status(500).json({ error: error.message })
+		return error.message
 	}
 }
