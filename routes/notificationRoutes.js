@@ -33,6 +33,7 @@ router.post("/send-notification", (req, res) => {
 	try {
 		// sendNotification(recipient, message, type)
 		// success response ✅
+		sendNotification(req, res)
 		res.status(200).json({
 			msg: `Notification sent to ${recipient} successfully`,
 			type,

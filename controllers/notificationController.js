@@ -1,4 +1,9 @@
+import {
+	sendEmail,
+	sendNotificationService,
+} from "../services/notificationService.js"
 // Import services here like sendEmail, sendSMS, sendPush, etc.
+
 export const sendNotification = (req, res) => {
 	const { recipient, message, type } = req.body
 
@@ -33,12 +38,15 @@ export const sendNotification = (req, res) => {
 		// You will later integrate actual notification logic here
 		// e.g., sendNotificationService(recipient, message, type);
 
+		sendNotificationService(recipient, message, type)
+
 		// Success response ✅
-		res.status(200).json({
-			msg: `Notification sent to ${recipient} successfully`,
-			type,
-			message,
-		})
+		sendEmail(recipient, message)
+		// res.status(200).json({
+		// 	msg: `Notification sent to ${recipient} successfully`,
+		// 	type,
+		// 	message,
+		// })
 	} catch (error) {
 		// Handle errors
 		res.status(500).json({ error: error.message })
