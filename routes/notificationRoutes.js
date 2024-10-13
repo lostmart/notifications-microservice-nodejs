@@ -22,31 +22,35 @@ router.post("/send-notification", (req, res) => {
 			.status(400)
 			.json({ error: "Invalid data sent to the notification service" })
 	}
-	switch (type) {
-		case "email":
-			// Send email using a service like SendGrid or Nodemailer
-			break
-		case "sms":
-			// Send SMS using a service like Twilio
-			break
-		case "push":
-			// Send push notification using Firebase Cloud Messaging (FCM) or similar
-			break
-		default:
-			return res.status(400).json({
-				error: "Invalid notification type: only sms, email or push allowed !",
-			})
+	const validationType = ["email", "sms", "push"]
+	if (!validationType.includes(type)) {
+		return res.status(400).json({
+			error: "Invalid notification type: only sms, email or push allowed !",
+		})
 	}
+	// switch (type) {
+	// 	case "email":
+	// 		// Send email using a service like SendGrid or Nodemailer
+	// 		break
+	// 	case "sms":
+	// 		// Send SMS using a service like Twilio
+	// 		break
+	// 	case "push":
+	// 		// Send push notification using Firebase Cloud Messaging (FCM) or similar
+	// 		break
+	// 	default:
+	// 		return res.status(400).json({
+	// 			error: "Invalid notification type: only sms, email or push allowed !",
+	// 		})
+	// }
 
 	try {
 		// sendNotification(recipient, message, type)
-		res
-			.status(200)
-			.json({
-				msg: `Notification sent to ${recipient} successfully`,
-				type,
-				message,
-			})
+		res.status(200).json({
+			msg: `Notification sent to ${recipient} successfully`,
+			type,
+			message,
+		})
 	} catch (error) {
 		res.status(500).json({ error: error.message })
 	}
