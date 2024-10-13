@@ -3,31 +3,6 @@ import { sendEmail } from "../controllers/emailController.js"
 const router = express.Router()
 
 router.post("/send-notification", (req, res) => {
-	const { recipient, message, subject, type } = req.body
-	//sendNotification(recipient, message, type)
-
-	// Check empty
-	if (!recipient || !message || !type) {
-		return res
-			.status(400)
-			.json({ error: "Recipient, message, and type are required" })
-	}
-	// Check type
-	if (
-		typeof recipient !== "string" ||
-		typeof message !== "string" ||
-		typeof type !== "string"
-	) {
-		return res
-			.status(400)
-			.json({ error: "Invalid data sent to the notification service" })
-	}
-	const validationType = ["email", "sms", "push"]
-	if (!validationType.includes(type)) {
-		return res.status(400).json({
-			error: "Invalid notification type: only sms, email or push allowed !",
-		})
-	}
 	sendEmail(req, res)
 
 	// try {
